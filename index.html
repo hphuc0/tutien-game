@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Tu Tiên Lục v15.0 | hphucz</title>
+<title>Tu Tiên Lục v15.1 | hphucz</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; touch-action: manipulation; }
   body { background: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
@@ -33,12 +33,12 @@
 </head>
 <body>
 
-<header>⚔️ TU TIÊN LỤC v15.0 | hphucz ⚔️</header>
+<header>⚔️ TU TIÊN LỤC v15.1 | hphucz ⚔️</header>
 <main id="app"></main>
-<footer>v15.0 | hphucz</footer>
+<footer>v15.1 | hphucz</footer>
 
 <script>
-// --- 100 TÊN NAM & 100 TÊN NỮ (CÓ NGUYỄN BẢO NGỌC NẰM TRONG 100 TÊN NỮ BÌNH THƯỜNG) ---
+// --- 100 TÊN NAM & 100 TÊN NỮ ---
 const namesMale = Array.from({length: 100}, (_, i) => [
   "Diệp Mặc","Lâm Động","Tiêu Viêm","Trần Bắc Huyền","Hàn Lão Ma","Cố Trường Ca","Lý Tự Nhiên","Sở Phong","Thạch Hạo","Bạch Tiểu Thuần",
   "Nghiêm Tuấn","Hứa Thanh","Phương Hàn","Tần Vũ","Kỷ Ninh","Đường Tam","La Phong","Chu Nguyên","Thái Huyền","Vương Lâm"
@@ -69,7 +69,8 @@ const eyes = ["Pháp Nhãn", "Tam Nhãn Phá Vọng", "Âm Dương Thần Mục"
 
 let player = null;
 let currentTab = 'status';
- function initApp() {
+
+function initApp() {
   document.getElementById('app').innerHTML = `
     <div class="card">
       <h3>📜 KHỞI TẠO NHÂN VẬT</h3>
@@ -108,7 +109,7 @@ function createChar() {
     partner: null,
     partnerAffection: 0,
     weapon: "Bộc Mộc Kiếm",
-    logs: ["Bước chân vào thế giới Tu Tiên Lục..."]
+    logs: ["Bước chân vào thế giới Tu Tiên Lục v15.1..."]
   };
   renderGame();
 }
