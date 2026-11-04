@@ -1,424 +1,380 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Tiên Lục 2D - 100 Cảnh Chính Ma</title>
-    <style>
-        :root {
-            --bg-color: #0d0f17;
-            --panel-bg: #161926;
-            --accent-gold: #d4af37;
-            --text-light: #e6e6f0;
-            --text-dim: #9aa0a6;
-            --btn-bg: #222738;
-            --btn-hover: #323952;
-            --red-alert: #e53935;
-            --mythic-red: #ff1744;
-            --evil-purple: #7b1fa2;
-            --righteous-blue: #0288d1;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-light); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
-        .container { width: 100%; max-width: 420px; height: 96vh; max-height: 960px; background-color: var(--panel-bg); border: 1px solid var(--accent-gold); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); position: relative; }
-                header { background-color: rgba(13, 15, 23, 0.9); padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent-gold); }
-        .header-title h1 { font-size: 0.95rem; color: var(--accent-gold); margin-bottom: 2px; }
-        .signature-badge { display: inline-block; background: linear-gradient(45deg, #d4af37, #8e24aa); color: #fff; font-size: 0.6rem; font-weight: bold; padding: 2px 6px; border-radius: 8px; }
-        .btn-setting { background: #2a2f45; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; font-weight: bold; }
-        .btn-setting:hover { background: #3c4463; }
-
-        .stats-panel { background-color: rgba(0,0,0,0.3); padding: 8px 12px; font-size: 0.7rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 3px; }
-        .progress-bar-bg { width: 100%; height: 5px; background-color: #222; border-radius: 3px; overflow: hidden; margin: 3px 0 4px 0; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #00bcd4, #8e24aa); width: 0%; transition: width 0.3s ease; }
-        
-        .chat-box { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        .msg { max-width: 85%; padding: 8px 10px; border-radius: 8px; font-size: 0.8rem; line-height: 1.3; }
-        .msg-bot { background-color: var(--btn-bg); border-left: 3px solid var(--accent-gold); align-self: flex-start; }
-        .msg-user { background-color: #1e3a5f; border-right: 3px solid var(--cyan-elem); align-self: flex-end; }
-                .controls-grid { padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; background-color: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05); max-height: 290px; overflow-y: auto; }
-        .btn { background-color: var(--btn-bg); color: var(--text-light); border: 1px solid var(--accent-gold); padding: 7px 4px; border-radius: 6px; font-size: 0.68rem; font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: center; }
-        .btn:hover { background-color: var(--btn-hover); transform: translateY(-1px); }
-        .btn-full { grid-column: span 2; }
-        .btn-suicide { border-color: #e53935; background-color: #3b1111; color: #ff5252; }
-        .audio-player { display: none; }
-        footer { text-align: center; font-size: 0.58rem; color: var(--text-dim); padding: 4px; background-color: #0a0c12; }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 100; }
-        .modal-content { background: var(--panel-bg); padding: 20px; border: 1px solid var(--accent-gold); border-radius: 10px; width: 85%; max-width: 320px; text-align: center; }
-        .modal-content h3 { color: var(--accent-gold); margin-bottom: 12px; font-size: 1rem; }
-        .modal-select { width: 100%; padding: 8px; margin-bottom: 15px; background: #0d0f17; border: 1px solid #444; color: #fff; border-radius: 5px; font-size: 0.85rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tu Tiên Lục v15.0 | hphucz</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; touch-action: manipulation; }
+  body { background: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+  header { background: #1e293b; color: #38bdf8; text-align: center; padding: 10px; font-weight: bold; font-size: 15px; border-bottom: 1px solid #334155; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+  footer { background: #1e293b; color: #64748b; text-align: center; padding: 6px; font-size: 11px; border-top: 1px solid #334155; }
+  main { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+  .card { background: #182234; border: 1px solid #2e3d52; border-radius: 8px; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+  .card h3 { color: #f59e0b; font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #2e3d52; padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 6px; }
+  button { background: #0284c7; color: #fff; border: none; padding: 10px 6px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; transition: all 0.1s; }
+  button:active { transform: scale(0.97); opacity: 0.8; }
+  button.green { background: #16a34a; }
+  button.purple { background: #7c3aed; }
+  button.amber { background: #d97706; }
+  button.danger { background: #dc2626; }
+  button:disabled { background: #475569; opacity: 0.5; }
+  input, select { width: 100%; padding: 8px; background: #0f172a; color: #fff; border: 1px solid #334155; border-radius: 6px; margin: 4px 0; font-size: 13px; }
+  .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+  .progress-bar { width: 100%; background: #0f172a; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px; border: 1px solid #334155; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #06b6d4); transition: width 0.3s; }
+  .log-box { background: #0b1329; border: 1px solid #1e293b; padding: 8px; border-radius: 6px; font-size: 11px; color: #94a3b8; height: 70px; overflow-y: auto; font-family: monospace; }
+  .badge { background: #334155; padding: 2px 6px; border-radius: 4px; font-size: 10px; color: #38bdf8; }
+  .nav-tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 4px; }
+  .nav-tabs button { flex: 1; white-space: nowrap; font-size: 11px; padding: 8px 4px; background: #1e293b; color: #94a3b8; }
+  .nav-tabs button.active { background: #0284c7; color: #fff; }
+</style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <div class="header-title">
-            <h1>✨ TU TIÊN LỤC 2D ✨</h1>
-            <div class="signature-badge">dev.hphucz</div>
+
+<header>⚔️ TU TIÊN LỤC v15.0 | hphucz ⚔️</header>
+
+<main id="app"></main>
+
+<footer>v15.0 | hphucz</footer>
+
+<script>
+// --- KHO DỮ LIỆU TÊN (100 NAM / 100 NỮ) ---
+const namesMale = Array.from({length: 100}, (_, i) => [
+  "Diệp Mặc","Lâm Động","Tiêu Viêm","Trần Bắc Huyền","Hàn Lão Ma","Cố Trường Ca","Lý Tự Nhiên","Sở Phong","Thạch Hạo","Bạch Tiểu Thuần",
+  "Nghiêm Tuấn","Hứa Thanh","Phương Hàn","Tần Vũ","Kỷ Ninh","Đường Tam","La Phong","Chu Nguyên","Thái Huyền","Vương Lâm"
+][i] || `Chí Tôn Nam Đạo Hữu ${i+1}`);
+
+const baseFemale = [
+  "Lâm Tuyền","Bạch Linh San","Mộ Dung Uyển","Tần Lạc Tuyết","Liễu Như Yên","Tô Dao","Yên Vũ","Cổ Nguyệt","Vân Hi","Cơ Dao",
+  "Tố Nhược Cốc","Băng Dao","Tử Nguyện","Tuyết Ninh","Mạn Dao","Linh Nhi","Thanh Y","Dạ Cung","Đào Hoa","Mộng Dao"
+];
+const namesFemale = Array.from({length: 99}, (_, i) => baseFemale[i] || `Đạo Hữu Nữ ${i+1}`);
+
+function getRandomName(gender) {
+  if (gender === 'female') {
+    return Math.random() < 0.3 ? "Nguyễn Bảo Ngọc" : namesFemale[Math.floor(Math.random() * namesFemale.length)];
+  }
+  return namesMale[Math.floor(Math.random() * namesMale.length)];
+}
+
+// --- 100 ĐẠI CẢNH GIỚI (CHÍNH ĐẠO & MA ĐẠO) ---
+const baseChinh = ["Luyện Khí","Trúc Cơ","Kết Đan","Nguyên Anh","Hóa Thần","Luyện Hư","Hợp Đạo","Đại Thừa","Độ Kiếp","Chân Tiên","Kim Tiên","Thái Ất","Đại La","Đạo Tổ","Hỗn Độn"];
+const realmsChinh = Array.from({length: 100}, (_, i) => baseChinh[i] || `Chính Đạo Cảnh Giới ${i+1}`);
+
+const baseMa = ["Ma Khí","Ma Sĩ","Ma Tướng","Ma Vương","Ma Quân","Ma Tôn","Ma Hoàng","Ma Thánh","Ma Tổ","Hỗn Thế Ma Thần","Vô Thượng Ma Đế","Thiên Ma Khổ Chủ","Cửu U Ma Bộc","Hỗn Độn Ma Tổ"];
+const realmsMa = Array.from({length: 100}, (_, i) => baseMa[i] || `Ma Đạo Cảnh Giới ${i+1}`);
+
+// --- TRANG BỊ & TÍNH NĂNG ---
+const pets = ["Bạch Hổ", "Chu Tước", "Thanh Long", "Huyền Vũ", "Thần Long Hỗn Độn"];
+const eyes = ["Pháp Nhãn", "Tam Nhãn Phá Vọng", "Âm Dương Thần Mục", "Hỗn Độn Thần Nhãn"];
+
+let player = null;
+let currentTab = 'status';
+
+function initApp() {
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <h3>📜 KHỞI TẠO NHÂN VẬT</h3>
+      <label>Đạo Hiệu Nhân Vật:</label>
+      <input type="text" id="pName" value="${getRandomName('female')}">
+      <div class="grid">
+        <button onclick="document.getElementById('pName').value = getRandomName('male')">🎲 Random Nam</button>
+        <button onclick="document.getElementById('pName').value = getRandomName('female')">🎲 Random Nữ (30% Crush)</button>
+      </div>
+      <label style="margin-top:8px; display:block;">Chọn Linh Căn / Phe Phái:</label>
+      <select id="pType">
+        <option value="chinh">⚖️ Chính Đạo (100 Cảnh Giới)</option>
+        <option value="ma">💀 Ma Đạo (100 Cảnh Giới)</option>
+      </select>
+      <button class="green" style="margin-top:10px; width:100%;" onclick="createChar()">🚀 BẮT ĐẦU TU TIÊN</button>
+    </div>
+  `;
+}
+
+function createChar() {
+  const name = document.getElementById('pName').value || "Vô Danh";
+  const type = document.getElementById('pType').value;
+  player = {
+    name, type,
+    realmIdx: 0,
+    layer: 1,
+    exp: 0,
+    maxExp: 100,
+    hp: 100,
+    maxHp: 100,
+    atk: 15,
+    def: 5,
+    lingShi: 500,
+    petIdx: -1,
+    eyeIdx: -1,
+    partner: null,
+    partnerAffection: 0,
+    weapon: "Bộc Mộc Kiếm",
+    logs: ["Bước chân vào thế giới Tu Tiên Lục..."]
+  };
+  renderGame();
+}
+
+function addLog(msg) {
+  player.logs.unshift(`[${new Date().toLocaleTimeString('vi-VN')}] ${msg}`);
+  if (player.logs.length > 20) player.logs.pop();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  renderGame();
+}
+
+function renderGame() {
+  const realms = player.type === 'chinh' ? realmsChinh : realmsMa;
+  const currentRealm = realms[player.realmIdx];
+  const hpPct = Math.max(0, Math.min(100, (player.hp / player.maxHp) * 100));
+  const expPct = Math.max(0, Math.min(100, (player.exp / player.maxExp) * 100));
+
+  let tabContent = '';
+
+  if (currentTab === 'status') {
+    tabContent = `
+      <div class="card">
+        <h3>⚡ THAO TÁC TU LUYỆN</h3>
+        <div class="grid">
+          <button onclick="khoTu()">🧘 Khổ Tu (+Exp)</button>
+          <button class="amber" onclick="dotPha()">✨ Đột Phá</button>
         </div>
-        <button class="btn-setting" onclick="openSetting()">⚙️ Cài Đặt</button>
-    </header>
+        <div class="grid">
+          <button class="purple" onclick="goBiCanh()" ${player.hp === 0 ? 'disabled' : ''}>🗺️ Bí Cảnh Săn Quái</button>
+          <button class="danger" onclick="tramBoss()" ${player.hp === 0 ? 'disabled' : ''}>⚔️ Trảm BOSS</button>
+        </div>
+      </div>
+    `;
+  } else if (currentTab === 'dongphu') {
+    tabContent = `
+      <div class="card">
+        <h3>🛖 ĐỘNG PHỦ TIÊN GIA</h3>
+        <p style="font-size:12px; margin-bottom:8px;">Nơi tĩnh dưỡng hồi phục sinh lực và bế quan ngộ đạo.</p>
+        <button class="green" style="width:100%; margin-bottom:6px;" onclick="restHP()">☕ Tĩnh Dưỡng Hồi Full HP</button>
+        <button class="amber" style="width:100%;" onclick="beQuan()">🔮 Bế Quan 100 Linh Thạch (+Tu Vi)</button>
+      </div>
+    `;
+  } else if (currentTab === 'features') {
+    tabContent = `
+      <div class="card">
+        <h3>🐾 LINH SỦNG & MẮT THẦN</h3>
+        <div class="stat-row"><span>Linh Sủng:</span><b>${player.petIdx >= 0 ? pets[player.petIdx] : 'Chưa có'}</b></div>
+        <button onclick="buyPet()" ${player.petIdx >= pets.length - 1 ? 'disabled' : ''}>🐶 Thức Tỉnh/Nâng Cấp Pet (500 LT)</button>
+        <hr style="border-color:#2e3d52; margin:8px 0;">
+        <div class="stat-row"><span>Linh Mục:</span><b>${player.eyeIdx >= 0 ? eyes[player.eyeIdx] : 'Chưa luyện'}</b></div>
+        <button class="purple" onclick="buyEye()" ${player.eyeIdx >= eyes.length - 1 ? 'disabled' : ''}>👁️ Tu Luyện Mắt Thần (1000 LT)</button>
+      </div>
 
-    <div class="stats-panel" id="stats-panel">
-        <div class="stat-row"><span id="p-name">Đạo Hữu: Chưa Nhập Đạo</span><span id="p-path">Hệ: Chưa Chọn</span></div>
-        <div class="stat-row"><span id="p-realm">Cảnh Giới: Phàm Nhân</span><span id="p-sword">Kiếm: Chưa Có</span></div>
-        <div class="progress-bar-bg"><div class="progress-bar-fill" id="qi-bar"></div></div>
-        <div class="stat-row"><span id="p-atk">ATK: 0</span><span id="p-hp">HP: 100/100</span><span id="p-stones">Linh Thạch: 300</span></div>
-        <div class="stat-row"><span id="p-pill" style="color: #00bcd4;">Đan: 0 viên</span><span id="p-body">Thể Chất: Phàm Thể</span></div>
-    </div>
+      <div class="card" style="margin-top:8px;">
+        <h3>🌸 SONG TU ĐẠO LỮ</h3>
+        <div class="stat-row"><span>Đạo Lữ:</span><b>${player.partner || 'Độc Thân'}</b></div>
+        <div class="stat-row"><span>Độ Thân Thiết:</span><b>${player.partnerAffection}/100</b></div>
+        <div class="grid">
+          <button class="amber" onclick="findPartner()">🔍 Tìm Đạo Lữ</button>
+          <button class="green" onclick="songTu()" ${!player.partner ? 'disabled' : ''}>💞 Song Tu</button>
+        </div>
+      </div>
+    `;
+  } else if (currentTab === 'shop') {
+    tabContent = `
+      <div class="card">
+        <h3>🏪 VẠN BẢO CÁC</h3>
+        <p style="font-size:12px; margin-bottom:8px;">Vũ Khí Hiện Tại: <b>${player.weapon}</b></p>
+        <button style="width:100%; margin-bottom:6px;" onclick="buyWeapon('Thái Cực Đồ (Công +50)', 500, 50)">⚔️ Mua Thái Cực Đồ (500 LT)</button>
+        <button style="width:100%; margin-bottom:6px;" onclick="buyWeapon('Trảm Tiên Kiếm (Công +150)', 2000, 150)">🗡️ Mua Trảm Tiên Kiếm (2000 LT)</button>
+        <button class="green" style="width:100%;" onclick="buyHPDan()">💊 Mua Cửu Chuyển Đan (+Full HP) - 100 LT</button>
+      </div>
+    `;
+  }
 
-    <div class="chat-box" id="chat-box">
-        <div class="msg msg-bot">Chào mừng đến thế giới <b>100 Cảnh Chính - Ma Phân Tranh</b> do <b>dev.hphucz</b> phát hành! Hãy bấm ngay nút <b>Cài Đặt ⚙️</b> ở góc trên để random tên, chọn giới tính và bước chân vào tiên đồ!</div>
-    </div>
-        <div class="controls-grid" id="controls">
-        <button class="btn" onclick="action('train')">🧘 Khổ Tu Vi</button>
-        <button class="btn btn-pill" onclick="action('eat_pill')">💊 Phục Dược Tăng Tu Vi</button>
-        <button class="btn" onclick="action('sword')">🗡️ Ngộ Kiếm Ý</button>
-        <button class="btn" onclick="action('mind_trial')">🌪️ Đột Phá Tâm Ma</button>
-        <button class="btn" onclick="action('gear')">🛡️ Cường Hóa Trang Bị</button>
-        <button class="btn" onclick="action('body')">🧬 Đúc Luyện Thể Chất</button>
-        <button class="btn" onclick="action('break')">⚡ Độ Kiếp Đột Phá</button>
-        <button class="btn" onclick="action('explore')">🗺️ Kỳ Ngộ Bí Cảnh</button>
-        <button class="btn btn-pill" onclick="action('pill')">💊 Luyện Đan Dược</button>
-        <button class="btn" onclick="action('fight')">⚔️ Trảm Yêu Thú</button>
-        <button class="btn" onclick="action('cave')">🛖 Động Phủ Hồi HP</button>
-        <button class="btn btn-suicide btn-full" onclick="action('suicide')">💥 Tự Bạo Oanh Liệt</button>
-    </div>
-    <footer>Game Engine v13.0 | dev.hphucz</footer>
-</div>
-
-<div class="modal" id="settingModal">
-    <div class="modal-content">
-        <h3>⚙️ Khởi Tạo Nhân Vật</h3>
-        <select id="selectGender" class="modal-select">
-            <option value="Nam">Nam Giới</option>
-            <option value="Nữ">Nữ Giới</option>
-        </select>
-        <select id="selectPath" class="modal-select">
-            <option value="Chính Đạo">🌟 Tông Môn Chính Đạo (Ổn định, Phòng thủ cao)</option>
-            <option value="Ma Đạo">🔥 Huyết Mạch Ma Đạo (Sát thương cực khủng, Đỉnh: Hỗn Thế Ma Thần)</option>
-        </select>
-        <button class="btn btn-full" style="padding: 10px; background: var(--accent-gold); color: #000;" onclick="saveSetting()">Random Tên & Nhập Đạo</button>
-    </div>
-</div>
-<audio id="bgm" loop class="audio-player"><source src="nhac.mp3" type="audio/mpeg"></audio>
-    <script>
-    const RIGHTEOUS_REALMS = [];
-    const rNames = ["Luyện Khí", "Trúc Cơ", "Kết Đan", "Nguyên Anh", "Hóa Thần", "Luyện Hư", "Hợp Đạo", "Đại Thừa", "Độ Kiếp", "Chân Tiên"];
-    for(let i = 1; i <= 100; i++) {
-        let tier = Math.ceil(i / 10);
-        let name = rNames[tier - 1] || "Thánh Tôn";
-        RIGHTEOUS_REALMS.push(`${i}. ${name} Cấp ${((i - 1) % 10) + 1}`);
-    }
-
-    const EVIL_REALMS = [];
-    const eNames = ["Ma Khí", "Ma Sĩ", "Ma Tướng", "Ma Vương", "Ma Quân", "Ma Tôn", "Ma Hoàng", "Ma Thánh", "Ma Tổ", "Chúa Tể Hắc Ám"];
-    for(let i = 1; i <= 99; i++) {
-        let tier = Math.ceil(i / 10);
-        let name = eNames[tier - 1] || "Hắc Ám Ma Tôn";
-        EVIL_REALMS.push(`${i}. ${name} Tầng ${((i - 1) % 10) + 1}`);
-    }
-    EVIL_REALMS.push("100. HỖN THẾ MA THẦN (Tối Thượng Cực Đỉnh)");
-
-    const MALE_NAMES = [
-        "Hàn Lão Ma", "Lý Phàm", "Trần Bắc Huyền", "Diệp Phàm", "Sở Phong", "Vương Lâm", "Mạnh Hạo", "Bạch Tiểu Thuần", "Lâm Động", "Tiêu Viêm",
-        "Thạch Hạo", "Cơ Hạo", "Vân Tiêu", "Dạ Minh", "Kiếm Tôn", "Mạc Phàm", "Cố Trường Ca", "Tần Mộc", "Lục Xuyên", "Bùi Nguyên",
-        "Vũ Văn Hạo", "Long Thiên", "Hạo Thiên", "Phong Vô Kỵ", "Đông Phương Hạo", "Nam Cung Vấn", "Bắc Minh Uy", "Tây Môn Xuy", "Độc Cô Cầu", "Hiên Viên Hạo",
-        "Vương Tằng", "Lý Thất Dạ", "Trần Hạo", "Diệp Thiên", "Sở Thiên Kỳ", "Vương Triết", "Mạnh Thiên", "Bạch Lạc", "Lâm Phong", "Tiêu Phàm",
-        "Thạch Trấn", "Cơ Phong", "Vân Triệt", "Dạ Vũ", "Kiếm Thần", "Mạc Bắc", "Cố Thanh Phong", "Tần Vũ", "Lục Dực", "Bùi Tiêu",
-        "Vũ Văn Lôi", "Long Uy", "Hạo Kiệt", "Phong Lệnh", "Đông Phương Phạt", "Nam Cung Hùng", "Bắc Minh Phong", "Tây Môn Hận", "Độc Cô Ngạo", "Hiên Viên Vô",
-        "Vương Kiêu", "Lý Tiêu Dao", "Trần Tôn", "Diệp Cuồng", "Sở Cuồng Nhân", "Vương Diêm Vương", "Mạnh Ma", "Bạch Cốt", "Lâm Kiếm Ma", "Hạo Nhiên",
-        "Thiên Phong", "Vân Hải", "Lục Trúc", "Bạch Hổ", "Huyền Vũ", "Chu Tước", "Thanh Long", "Kỳ Lân", "Ma Tôn", "Kiếm Thánh",
-        "Vô Thượng", "Hư Không", "Phá Thiên", "Sơn Hải", "Nhật Nguyệt", "Tinh Thần", "Cửu Châu", "Bát Hoang", "Thập Phương", "Vạn Vật",
-        "Tịch Diệt", "Luân Hồi", "Hỗn Nguyên", "Càn Khôn", "Lưỡng Nghi", "Tam Tài", "Tứ Tượng", "Ngũ Hành", "Lục Đạo", "Thất Tinh"
-    ];
-
-    const FEMALE_NAMES = [
-        "Liễu Như Yên", "Bạch Linh San", "Mộ Dung Uyển", "Tần Lạc Tuyết", "Nam Cung Uyển", "Vân Sơ Nguyệt", "Diệp Linh", "Sở Mộng Dao", "Bích Dao", "Lục Tuyết Kỳ",
-        "Bích Thủy", "Hà Tố Tố", "Cơ Như Tuyết", "Vương Ngữ Yên", "Tô Thiển", "Hạ Cẩn Nhi", "Đông Phương Bạch", "Bắc Minh Nguyệt", "Lâm Thanh Uyển", "Phượng Cửu",
-        "Bạch Thiển", "Vân Hi", "Mộng Huyễn", "Tử Linh", "Huyền Băng", "Lam Nhi", "Hồng Phấn", "Nguyệt Thiền", "Hỏa Linh Nhi", "Vân Hy",
-        "Cố Tịch Y", "Tần Tiên Nhi", "Lý Sư Sư", "Trần Uyển Như", "Diệp Khuynh Thành", "Sở Linh Lung", "Vương Tịnh", "Mạnh Tuyết", "Bạch Thược", "Lâm Uyển Nhi",
-        "Tiêu Mộng", "Thạch Phi Huyên", "Cơ Phượng", "Vân Tiên Tử", "Dạ Lạc", "Kiếm Tiêu", "Mạc Thanh", "Cố Lạc Hân", "Tần Mộng", "Lục Nguyệt",
-        "Bùi Linh", "Vũ Văn Sương", "Long Nhi", "Hạo Nguyệt", "Phong Linh", "Đông Phương Linh", "Nam Cung Nhu", "Bắc Minh Tuyết", "Tây Môn Lệ", "Độc Cô Nguyệt",
-        "Hiên Viên Y", "Vương Tâm", "Lý Thanh Trúc", "Trần Nguyệt", "Diệp Vũ", "Sở Băng", "Vương Tuyết Nhi", "Mạnh Hân", "Bạch Phượng", "Lâm Tiên Nhi",
-        "Băng Tâm", "Diệp Sương", "Tuyết Nhi", "Hương Trầm", "Mộc Uyển", "Hạ Di", "Lô Lô", "Đan Đan", "Thiền Thiền", "Ngọc Trân",
-        "Thanh Trúc", "Bích Vân", "Hồng Lăng", "Thái Trinh", "Vân Phượng", "Mộng Nhi", "Khuynh Nguyệt", "Tố Tố", "Vũ Mặc", "Linh Lung",
-        "Tiên Nhi", "Ngọc Nhi", "Nguyệt Nhi", "Tuyết Mai", "Hà Hoa", "Liên Hoa", "Thu Thủy", "Xuân Hoa", "Hạ Lam", "Đông Trúc"
-    ];
-
-    const ALL_SWORDS = [
-        { name: "Sắt Gỉ Kiếm", type: "normal" }, { name: "Thanh Phong Kiếm", type: "normal" }, { name: "Bích Thủy Kiếm", type: "normal" },
-        { name: "Hàn Thiết Kiếm", type: "normal" }, { name: "Trầm Mộc Kiếm", type: "normal" }, { name: "Xích Viêm Kiếm", type: "normal" },
-        { name: "Phá Phong Kiếm", type: "normal" }, { name: "Tử Điện Kiếm", type: "normal" }, { name: "U Minh Kiếm", type: "normal" },
-        { name: "Truy Hồn Kiếm", type: "normal" }, { name: "Lưu Tinh Kiếm", type: "normal" }, { name: "Vân Vụ Kiếm", type: "normal" },
-        { name: "Huyết Ảnh Kiếm", type: "normal" }, { name: "Long Lân Kiếm", type: "normal" }, { name: "Phượng Vũ Kiếm", type: "normal" },
-        { name: "Thiên Cương Kiếm", type: "normal" }, { name: "Địa Sát Kiếm", type: "normal" }, { name: "Thất Tinh Kiếm", type: "normal" },
-        { name: "Bát Trận Kiếm", type: "normal" }, { name: "Cửu U Kiếm", type: "normal" },
-        { name: "Hạo Thiên Thần Kiếm", type: "normal" }, { name: "Vô Ảnh Kiếm", type: "normal" }, { name: "Tịch Diệt Kiếm", type: "normal" },
-        { name: "Luân Hồi Kiếm", type: "normal" }, { name: "Thái A Kiếm", type: "normal" }, { name: "Hiên Viên Phân Thân", type: "normal" },
-        { name: "Trảm Tiên Kiếm", type: "normal" }, { name: "Hám Thiên Kiếm", type: "normal" }, { name: "Bát荒 Kiếm", type: "normal" },
-        { name: "Càn Khôn Kiếm", type: "normal" }, { name: "Hỗn Nguyên Kiếm", type: "normal" }, { name: "Lưỡng Nghi Kiếm", type: "normal" },
-        { name: "Tam Tài Kiếm", type: "normal" }, { name: "Tứ Tượng Kiếm", type: "normal" }, { name: "Ngũ Hành Kiếm", type: "normal" },
-        { name: "Lục Đạo Kiếm", type: "normal" }, { name: "Thất Tinh Long Uyên", type: "normal" }, { name: "Bát Quái Kiếm", type: "normal" },
-        { name: "Cửu Tiêu Kiếm", type: "normal" }, { name: "Thập Phương Kiếm", type: "normal" },
-        { name: "🔥 [THẦN THOẠI] Hỗn Độn Nguyên Sơ Kiếm", type: "mythic" },
-        { name: "⚡ [THẦN THOẠI] Tru Tiên Kiếm Trận Bản Thể", type: "mythic" },
-        { name: "🌌 [THẦN THOẠI] Khai Thiên Phích Địa Thần Kiếm", type: "mythic" },
-        { name: "🌀 [THẦN THOẠI] Vĩnh Hằng Luân Hồi Kiếm", type: "mythic" },
-        { name: "✨ [THẦN THOẠI] Sáng Thế Vô Thượng Thiên Kiếm", type: "mythic" },
-        { name: "🌑 [THẦN THOẠI] Hắc Ám Hủy Diệt Ma Kiếm", type: "mythic" },
-        { name: "🐉 [THẦN THOẠI] Chân Long Tổ Hợp Thần Kiếm", type: "mythic" },
-        { name: "🔥 [THẦN THOẠI] Phượng Hoàng Niết Bàn Thần Kiếm", type: "mythic" },
-        { name: "⚡ [THẦN THOẠI] Lôi Đình Chủ宰 Kiếm", type: "mythic" },
-        { name: "👑 [THẦN THOẠI] Chí Tôn Vạn Giới Kiếm", type: "mythic" }
-    ];
-
-    let player = { 
-        name: "", gender: "", path: "", realmIdx: 0, qi: 0, maxQi: 150, hp: 100, maxHp: 100, 
-        atk: 0, intent: 0, swordRealmIdx: 0, gearIdx: 0, stones: 300, pills: 0, bodyIdx: 0, 
-        sword: "", isMythicSword: false, created: false, inCombat: false, monsterHp: 0 
-    };
-            function loadGame() {
-        let saved = localStorage.getItem("dev_hphucz_100realms_tutien");
-        if (saved) {
-            try { 
-                let parsed = JSON.parse(saved);
-                if (parsed && parsed.created) { player = parsed; }
-            } catch(e) {}
-        }
-    }
-
-    function saveGame() {
-        localStorage.setItem("dev_hphucz_100realms_tutien", JSON.stringify(player));
-    }
-
-    function log(msg, type="bot") {
-        const box = document.getElementById("chat-box");
-        const div = document.createElement("div");
-        div.className = `msg msg-${type}`;
-        div.innerHTML = msg;
-        box.appendChild(div);
-        box.scrollTop = box.scrollHeight;
-    }
-
-    function openSetting() {
-        if (player.created) {
-            document.getElementById("selectGender").value = player.gender;
-            document.getElementById("selectPath").value = player.path;
-        }
-        document.getElementById("settingModal").style.display = "flex";
-    }
-
-    function saveSetting() {
-        let genderInput = document.getElementById("selectGender").value;
-        let pathInput = document.getElementById("selectPath").value;
+  document.getElementById('app').innerHTML = `
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>👤 ${player.name}</h2>
+        <span class="badge">${player.type === 'chinh' ? '⚖️ Chính Đạo' : '💀 Ma Đạo'}</span>
+      </div>
+      <div style="margin-top:6px;">
+        <div class="stat-row"><span>Cảnh Giới:</span><b style="color:#f59e0b">${currentRealm} (Tầng ${player.layer}/9)</b></div>
+        <div class="stat-row"><span>Máu (HP):</span><b>${player.hp}/${player.maxHp} ${player.hp === 0 ? '<span style="color:red">[TRỌNG THƯƠNG]</span>' : ''}</b></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${hpPct}%; background:${player.hp===0?'red':''}"></div></div>
         
-        player.gender = genderInput;
-        player.path = pathInput;
+        <div class="stat-row"><span>Tu Vi:</span><b>${player.exp}/${player.maxExp}</b></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${expPct}%"></div></div>
+        
+        <div class="stat-row"><span>Sức Công: <b>${player.atk}</b></span><span>Sức Thủ: <b>${player.def}</b></span><span>Linh Thạch: <b style="color:#eab308">${player.lingShi} 💰</b></span></div>
+      </div>
+    </div>
 
-        if (player.gender === "Nữ") {
-            let isSecret = Math.random() < 0.30;
-            if (isSecret) {
-                player.name = "Nguyễn Bảo Ngọc";
-            } else {
-                player.name = FEMALE_NAMES[Math.floor(Math.random() * FEMALE_NAMES.length)];
-            }
-        } else {
-            player.name = MALE_NAMES[Math.floor(Math.random() * MALE_NAMES.length)];
-        }
+    <div class="nav-tabs">
+      <button class="${currentTab==='status'?'active':''}" onclick="switchTab('status')">⚔️ Tu Luyện</button>
+      <button class="${currentTab==='dongphu'?'active':''}" onclick="switchTab('dongphu')">🛖 Động Phủ</button>
+      <button class="${currentTab==='features'?'active':''}" onclick="switchTab('features')">🐾 Pet/Song Tu</button>
+      <button class="${currentTab==='shop'?'active':''}" onclick="switchTab('shop')">🏪 Vạn Bảo Các</button>
+    </div>
 
-        if (player.path === "Ma Đạo") { 
-            player.atk = 70; 
-        } else { 
-            player.maxHp = 250; 
-            player.hp = player.maxHp; 
-            player.atk = 50;
-        }
+    ${tabContent}
 
-        let isMythicRoll = Math.random() < 0.30;
-        let pool = isMythicRoll ? ALL_SWORDS.filter(s => s.type === "mythic") : ALL_SWORDS.filter(s => s.type === "normal");
-        let chosenSwordObj = pool[Math.floor(Math.random() * pool.length)];
-        player.sword = chosenSwordObj.name;
+    <div class="card">
+      <h3>📜 NHẬT KÝ TU HÀNH</h3>
+      <div class="log-box">${player.logs.map(l => `<div>${l}</div>`).join('')}</div>
+    </div>
+  `;
+}
 
-        if (chosenSwordObj.type === "mythic") {
-            player.isMythicSword = true;
-            player.atk = Math.floor(player.atk * 2.5);
-            player.maxHp = Math.floor(player.maxHp * 2.5);
-            player.hp = player.maxHp;
-            player.stones += 2000;
-            log(`🌟 <b>ĐỊA CHẤN THIÊN HẠ!</b> Đạo hữu <b>${player.name}</b> gia nhập <b style="color:var(--accent-gold)">${player.path}</b> và sở hữu kiếm <span style="color:var(--mythic-red)">THẦN THOẠI</span>: <b>${player.sword}</b>!`);
-        } else {
-            player.isMythicSword = false;
-            log(`<b>[dev.hphucz System]</b> Khởi tạo thành công! Đạo hữu <b>${player.name}</b> theo đuổi <b>${player.path}</b> với thần kiếm: <b>${player.sword}</b>.`);
-        }
+// --- THAO TÁC XỬ LÝ GAME ---
+function khoTu() {
+  const gain = 30 + (player.petIdx + 1) * 5;
+  player.exp += gain;
+  addLog(`🧘 Khổ tu tĩnh tọa, hấp thu linh khí nhận +${gain} Tu Vi.`);
+  renderGame();
+}
 
-        player.created = true;
-        document.getElementById("settingModal").style.display = "none";
-        updateUI();
+function dotPha() {
+  if (player.exp < player.maxExp) {
+    addLog(`❌ Tu vi chưa đủ (${player.exp}/${player.maxExp}) để đột phá!`);
+  } else {
+    player.exp = 0;
+    player.maxExp = Math.floor(player.maxExp * 1.4);
+    if (player.layer < 9) {
+      player.layer++;
+      player.atk += 10;
+      player.maxHp += 30;
+      player.hp = player.maxHp;
+      addLog(`🎉 Đột phá thành công lên Tầng ${player.layer}/9! Tăng Công/HP.`);
+    } else {
+      player.layer = 1;
+      player.realmIdx++;
+      player.atk += 30;
+      player.maxHp += 100;
+      player.hp = player.maxHp;
+      addLog(`🔥 ĐẠI ĐỘT PHÁ! Tiến vào Cảnh Giới mới! Sức mạnh tăng vọt!`);
     }
+  }
+  renderGame();
+}
 
-    function updateUI() {
-        if (!player.created) return;
-        let realmsList = (player.path === "Ma Đạo") ? EVIL_REALMS : RIGHTEOUS_REALMS;
-        let currentRealmName = realmsList[player.realmIdx] || realmsList[realmsList.length - 1];
-        let swordDisplay = player.isMythicSword ? `<span style="color: var(--mythic-red); font-weight: bold;">${player.sword}</span>` : player.sword;
+function goBiCanh() {
+  if (player.hp === 0) {
+    addLog(`❌ Trọng thương (HP=0)! Bắt buộc vào 🛖 Động Phủ dưỡng thương trước!`);
+    renderGame();
+    return;
+  }
+  const dmg = Math.max(10, 40 - player.def);
+  player.hp = Math.max(0, player.hp - dmg);
+  const expGain = 50;
+  const lsGain = 80;
+  player.exp += expGain;
+  player.lingShi += lsGain;
+  addLog(`🗺️ Vào Bí Cảnh chiến quái: Nhận +${expGain} Tu Vi, +${lsGain} Linh Thạch. Bị trừ ${dmg} HP.`);
+  if (player.hp === 0) addLog(`💥 Bạn đã kiệt sức trọng thương! HP về 0!`);
+  renderGame();
+}
 
-        document.getElementById("p-name").innerText = `Đạo Hữu: ${player.name} (${player.gender})`;
-        document.getElementById("p-path").innerText = `Hệ: ${player.path}`;
-        document.getElementById("p-realm").innerText = `Cảnh Giới: ${currentRealmName}`;
-        document.getElementById("p-sword").innerHTML = `Kiếm: ${swordDisplay}`;
-        document.getElementById("p-atk").innerText = `ATK: ${player.atk}`;
-        document.getElementById("p-stones").innerText = `Linh Thạch: ${player.stones}`;
-        document.getElementById("p-pill").innerText = `Đan: ${player.pills} viên`;
-        document.getElementById("p-body").innerText = `Thể Chất: ${BODIES[player.bodyIdx]}`;
-        document.getElementById("p-hp").innerText = `HP: ${player.hp}/${player.maxHp}`;
-        document.getElementById("qi-bar").style.width = Math.min(100, (player.qi / player.maxQi) * 100) + "%";
-        saveGame();
-    }
+function tramBoss() {
+  if (player.hp === 0) {
+    addLog(`❌ Trọng thương (HP=0)! Bắt buộc vào 🛖 Động Phủ dưỡng thương trước!`);
+    renderGame();
+    return;
+  }
+  const dmg = Math.max(30, 80 - player.def);
+  player.hp = Math.max(0, player.hp - dmg);
+  if (player.hp > 0) {
+    const expGain = 150;
+    const lsGain = 300;
+    player.exp += expGain;
+    player.lingShi += lsGain;
+    addLog(`⚔️ Trảm BOSS thành công! Nhận +${expGain} Tu Vi, +${lsGain} Linh Thạch. Tốn ${dmg} HP.`);
+  } else {
+    addLog(`💥 BOSS quá mạnh! Bạn bị đánh gục HP về 0!`);
+  }
+  renderGame();
+}
 
-    window.onload = function() {
-        loadGame();
-        if (player.created) {
-            updateUI();
-            log(`<b>[dev.hphucz System]</b> Khôi phục nhân vật <b>${player.name}</b> thành công!`);
-        } else {
-            openSetting();
-        }
-    };
+function restHP() {
+  player.hp = player.maxHp;
+  addLog(`🛖 Về Động Phủ tĩnh dưỡng, thể lực hoàn toàn hồi phục (HP Full).`);
+  renderGame();
+}
 
-    const BODIES = ["Phàm Thể", "🛡️ Thiết Cốt Thể", "⚔️ Bá Vương Thể", "🐉 Hỗn Độn Thánh Thể", "✨ Bất Hủ Bất灭 Thể"];
-    const GEARS = ["Áo Vải & Giày Cỏ", "🛡️ Huyền Thiết Giáp", "🥷 U Minh Khải Giáp", "👑 Long Lân Thiên Y", "✨ Hỗn Độn Thần Giáp"];
-            function action(act) {
-        if (!player.created) { openSetting(); return; }
-        document.getElementById("bgm").play().catch(() => {});
+function beQuan() {
+  if (player.lingShi < 100) {
+    addLog(`❌ Không đủ 100 Linh Thạch để bế quan!`);
+  } else {
+    player.lingShi -= 100;
+    player.exp += 120;
+    addLog(`🔮 Bế quan luyện đan tốn 100 Linh Thạch, nhận +120 Tu Vi.`);
+  }
+  renderGame();
+}
 
-        if (act === 'train') {
-            if (player.stones < 5) { log("⚠️ Không đủ 5 Linh Thạch tụ linh!"); return; }
-            player.stones -= 5;
-            let gain = Math.floor(Math.random() * 20) + 15;
-            if (player.path === "Ma Đạo") gain = Math.floor(gain * 1.3);
-            if (player.isMythicSword) gain = Math.floor(gain * 2.2);
-            player.qi += gain;
-            log(`🧘 Khổ tu gia tăng +${gain} tu vi!`);
-            if (player.qi >= player.maxQi) log("💡 Tu vi viên mãn! Hãy chuẩn bị <b>Độ Kiếp Đột Phá</b>.");
-        }
-        else if (act === 'eat_pill') {
-            if (player.pills <= 0) { log("⚠️ Không còn Đan Dược trong túi!"); return; }
-            player.pills -= 1;
-            let qiGain = 120 + (player.realmIdx * 25);
-            if (player.isMythicSword) qiGain = Math.floor(qiGain * 2.2);
-            player.qi += qiGain;
-            log(`💊 Phục dụng Tăng Nguyên Đan, nhận ngay +${qiGain} Tu Vi!`);
-        }
-        else if (act === 'mind_trial') {
-            if (player.qi < player.maxQi * 0.5) { log("⚠️ Tu vi chưa đủ để khai mở Tâm Ma Kiếp!"); return; }
-            let success = Math.random() < 0.7;
-            if (success) {
-                player.atk += 70;
-                player.qi = Math.floor(player.qi * 0.4);
-                log(`🌪️ <b>VƯỢT QUA TÂM MA:</b> Chém bỏ chấp niệm, ATK tăng vĩnh viễn +70!`);
-            } else {
-                player.hp = Math.max(1, Math.floor(player.hp * 0.5));
-                log(`💥 <b>TÂM MA PHẢN PHỆ:</b> Bị tâm ma xâm thực, mất nửa cây HP!`);
-            }
-        }
-        else if (act === 'sword') {
-            if (player.stones < 15) { log("⚠️ Cần 15 Linh Thạch ngộ kiếm ý!"); return; }
-            player.stones -= 15;
-            player.intent += 5; player.atk += 12;
-            log(`🗡️ Ngộ kiếm ý thành công (+5 Kiếm Ý, +12 ATK).`);
-        }
-        else if (act === 'gear') {
-            if (player.gearIdx < GEARS.length - 1) {
-                let cost = 350 * (player.gearIdx + 1);
-                if (player.stones >= cost) {
-                    player.stones -= cost; player.gearIdx += 1;
-                    player.maxHp += 300; player.hp = player.maxHp;
-                    log(`🛡️ Nâng cấp trang bị: <b>${GEARS[player.gearIdx]}</b> (+300 Max HP)!`);
-                } else { log(`⚠️ Cần ${cost} Linh Thạch!`); }
-            } else { log("🛡️ Trang bị tối thượng!"); }
-        }
-        else if (act === 'body') {
-            if (player.bodyIdx < BODIES.length - 1) {
-                let cost = 600 * (player.bodyIdx + 1);
-                if (player.stones >= cost) {
-                    player.stones -= cost; player.bodyIdx += 1;
-                    player.maxHp += 250; player.hp = player.maxHp;
-                    log(`🧬 Đúc luyện thể chất: <b>${BODIES[player.bodyIdx]}</b>!`);
-                } else { log(`⚠️ Cần ${cost} Linh Thạch!`); }
-            } else { log("🧬 Thể chất đỉnh phong!"); }
-        }
-                else if (act === 'break') {
-            let maxRealmsCount = 100;
-            if (player.realmIdx >= maxRealmsCount - 1) {
-                log(`👑 Đạo hữu đã đạt đến cảnh giới cao nhất (${player.path === 'Ma Đạo' ? 'Hỗn Thế Ma Thần' : 'Thánh Tôn Cấp 100'}), vô địch thiên hạ!`);
-                return;
-            }
-            if (player.qi < player.maxQi) { log("❌ Tu vi chưa viên mãn để độ kiếp!"); return; }
+function buyPet() {
+  if (player.lingShi < 500) {
+    addLog(`❌ Không đủ 500 Linh Thạch mua Linh Sủng!`);
+  } else {
+    player.lingShi -= 500;
+    player.petIdx++;
+    player.atk += 20;
+    addLog(`🐾 Thức tỉnh Linh Sủng ${pets[player.petIdx]}! Tăng +20 Sức Công.`);
+  }
+  renderGame();
+}
 
-            let baseRate = (player.path === "Ma Đạo") ? 0.45 : 0.65;
-            let survivalRate = player.isMythicSword ? 0.95 : (baseRate + (player.bodyIdx * 0.1));
-            
-            if (Math.random() < survivalRate) {
-                player.qi = 0; player.maxQi = Math.floor(player.maxQi * 1.45);
-                player.realmIdx += 1;
-                let addHp = player.path === "Ma Đạo" ? 350 : 400;
-                let addAtk = player.path === "Ma Đạo" ? 80 : 55;
-                player.maxHp += addHp; player.hp = player.maxHp; player.atk += addAtk;
-                
-                let realmsList = (player.path === "Ma Đạo") ? EVIL_REALMS : RIGHTEOUS_REALMS;
-                log(`🌟 <b>ĐỘT PHÁ THÀNH CÔNG!</b> Tiến vào cảnh giới: <b>${realmsList[player.realmIdx]}</b>!`);
-            } else {
-                player.hp = Math.max(1, Math.floor(player.maxHp * 0.4));
-                log(`❌ <b>LÔI KIẾP GIÁNG ĐÒN NẶNG:</b> Đột phá thất bại, trọng thương nặng!`);
-            }
-        }
-        else if (act === 'explore') {
-            let rand = Math.random();
-            if (rand < 0.45) {
-                let found = Math.floor(Math.random() * 250) + 150;
-                player.stones += found; log(`💎 Khám phá bí cảnh, nhặt được +${found} Linh Thạch.`);
-            } else if (rand < 0.85) {
-                player.inCombat = true; player.monsterHp = (player.realmIdx + 1) * 350;
-                log(`⚔️ <b>CẢNH BÁO:</b> Chạm trán Yêu Thú Hồng Hoang (HP: ${player.monsterHp})!`);
-            } else {
-                player.hp = Math.max(1, player.hp - 50); log(`☠️ Mắc kẹt trận pháp cổ, mất -50 HP!`);
-            }
-        }
-        else if (act === 'pill') {
-            if (player.stones < 150) { log("⚠️ Cần 150 Linh Thạch luyện đan!"); return; }
-            player.stones -= 150;
-            if (Math.random() < 0.7) { player.pills += 1; log("💊 Luyện đan thành công +1 Tăng Nguyên Đan."); }
-            else { log("💥 Lò luyện phát nổ!"); }
-        }
-        else if (act === 'fight') {
-            if (!player.inCombat) { log("ℹ️ Xung quanh bình yên."); return; }
-            let dmg = player.atk + (player.intent * 3);
-            player.monsterHp -= dmg;
-            log(`🗡️ Tấn công gây <b>${dmg}</b> sát thương.`);
-            if (player.monsterHp <= 0) {
-                player.inCombat = false; player.stones += 700;
-                log(`🎉 Tiêu diệt yêu thú! Thưởng +700 Linh Thạch.`);
-            } else {
-                let mobAtk = (player.realmIdx + 1) * 35;
-                player.hp = Math.max(0, player.hp - mobAtk);
-                log(`💥 Yêu thú phản công gây ${mobAtk} sát thương!`);
-                if (player.hp === 0) log("💀 Ngất xỉu vì trọng thương!");
-            }
-                    }
-                else if (act === 'cave') {
-            if (player.pills > 0) { player.pills -= 1; player.hp = player.maxHp; log("💊 Dùng đan dược hồi phục 100% HP!"); }
-            else { player.hp = player.maxHp; log("🛖 Về Động Phủ hồi phục toàn bộ HP!"); }
-        }
-        else if (act === 'suicide') {
-            if (confirm("⚠️ Đạo hữu có thực sự muốn TỰ BẠO oanh liệt quy về con số 0?")) {
-                player.hp = 0; player.qi = 0; player.realmIdx = 0;
-                log("💥 <b>ĐÃ TỰ BẠO!</b> Linh lực tan biến giữa hư vô.");
-            }
-        }
-        updateUI();
-    }
+function buyEye() {
+  if (player.lingShi < 1000) {
+    addLog(`❌ Không đủ 1000 Linh Thạch luyện Mắt Thần!`);
+  } else {
+    player.lingShi -= 1000;
+    player.eyeIdx++;
+    player.atk += 50;
+    addLog(`👁️ Luyện thành ${eyes[player.eyeIdx]}! Soi căn cơ quái vật, +50 Sức Công.`);
+  }
+  renderGame();
+}
+
+function findPartner() {
+  const isCrush = Math.random() < 0.3;
+  player.partner = isCrush ? "Nguyễn Bảo Ngọc" : namesFemale[Math.floor(Math.random() * namesFemale.length)];
+  player.partnerAffection = 20;
+  addLog(`🌸 Kết duyên gặp gỡ Đạo Lữ: ${player.partner}!`);
+  renderGame();
+}
+
+function songTu() {
+  player.exp += 80;
+  player.partnerAffection = Math.min(100, player.partnerAffection + 10);
+  addLog(`💞 Song tu cùng ${player.partner}, gia tăng +80 Tu Vi & Độ Thân Thiết.`);
+  renderGame();
+}
+
+function buyWeapon(name, price, atkBonus) {
+  if (player.lingShi < price) {
+    addLog(`❌ Không đủ Linh Thạch mua ${name}!`);
+  } else {
+    player.lingShi -= price;
+    player.weapon = name;
+    player.atk += atkBonus;
+    addLog(`🗡️ Trang bị ${name}, tăng +${atkBonus} Sức Công!`);
+  }
+  renderGame();
+}
+
+function buyHPDan() {
+  if (player.lingShi < 100) {
+    addLog(`❌ Không đủ 100 Linh Thạch mua Cửu Chuyển Đan!`);
+  } else {
+    player.lingShi -= 100;
+    player.hp = player.maxHp;
+    addLog(`💊 Uống Cửu Chuyển Đan, ngay lập tức hồi phục Full HP!`);
+  }
+  renderGame();
+}
+
+initApp();
 </script>
 </body>
 </html>
