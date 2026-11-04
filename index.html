@@ -13,7 +13,6 @@
   .card { background: #182234; border: 1px solid #2e3d52; border-radius: 8px; padding: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
   .card h3 { color: #f59e0b; font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #2e3d52; padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 6px; }
   button { background: #0284c7; color: #fff; border: none; padding: 10px 6px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; transition: all 0.1s; }
   button:active { transform: scale(0.97); opacity: 0.8; }
   button.green { background: #16a34a; }
@@ -35,27 +34,25 @@
 <body>
 
 <header>⚔️ TU TIÊN LỤC v15.0 | hphucz ⚔️</header>
-
 <main id="app"></main>
-
 <footer>v15.0 | hphucz</footer>
 
 <script>
-// --- KHO DỮ LIỆU TÊN (100 NAM / 100 NỮ) ---
+// --- 100 TÊN NAM & 100 TÊN NỮ (CÓ NGUYỄN BẢO NGỌC NẰM TRONG 100 TÊN NỮ BÌNH THƯỜNG) ---
 const namesMale = Array.from({length: 100}, (_, i) => [
   "Diệp Mặc","Lâm Động","Tiêu Viêm","Trần Bắc Huyền","Hàn Lão Ma","Cố Trường Ca","Lý Tự Nhiên","Sở Phong","Thạch Hạo","Bạch Tiểu Thuần",
   "Nghiêm Tuấn","Hứa Thanh","Phương Hàn","Tần Vũ","Kỷ Ninh","Đường Tam","La Phong","Chu Nguyên","Thái Huyền","Vương Lâm"
 ][i] || `Chí Tôn Nam Đạo Hữu ${i+1}`);
 
 const baseFemale = [
-  "Lâm Tuyền","Bạch Linh San","Mộ Dung Uyển","Tần Lạc Tuyết","Liễu Như Yên","Tô Dao","Yên Vũ","Cổ Nguyệt","Vân Hi","Cơ Dao",
-  "Tố Nhược Cốc","Băng Dao","Tử Nguyện","Tuyết Ninh","Mạn Dao","Linh Nhi","Thanh Y","Dạ Cung","Đào Hoa","Mộng Dao"
+  "Nguyễn Bảo Ngọc","Lâm Tuyền","Bạch Linh San","Mộ Dung Uyển","Tần Lạc Tuyết","Liễu Như Yên","Tô Dao","Yên Vũ","Cổ Nguyệt","Vân Hi",
+  "Cơ Dao","Tố Nhược Cốc","Băng Dao","Tử Nguyện","Tuyết Ninh","Mạn Dao","Linh Nhi","Thanh Y","Dạ Cung","Đào Hoa"
 ];
-const namesFemale = Array.from({length: 99}, (_, i) => baseFemale[i] || `Đạo Hữu Nữ ${i+1}`);
+const namesFemale = Array.from({length: 100}, (_, i) => baseFemale[i] || `Đạo Hữu Nữ ${i+1}`);
 
 function getRandomName(gender) {
   if (gender === 'female') {
-    return Math.random() < 0.3 ? "Nguyễn Bảo Ngọc" : namesFemale[Math.floor(Math.random() * namesFemale.length)];
+    return namesFemale[Math.floor(Math.random() * namesFemale.length)];
   }
   return namesMale[Math.floor(Math.random() * namesMale.length)];
 }
@@ -67,14 +64,12 @@ const realmsChinh = Array.from({length: 100}, (_, i) => baseChinh[i] || `Chính 
 const baseMa = ["Ma Khí","Ma Sĩ","Ma Tướng","Ma Vương","Ma Quân","Ma Tôn","Ma Hoàng","Ma Thánh","Ma Tổ","Hỗn Thế Ma Thần","Vô Thượng Ma Đế","Thiên Ma Khổ Chủ","Cửu U Ma Bộc","Hỗn Độn Ma Tổ"];
 const realmsMa = Array.from({length: 100}, (_, i) => baseMa[i] || `Ma Đạo Cảnh Giới ${i+1}`);
 
-// --- TRANG BỊ & TÍNH NĂNG ---
 const pets = ["Bạch Hổ", "Chu Tước", "Thanh Long", "Huyền Vũ", "Thần Long Hỗn Độn"];
 const eyes = ["Pháp Nhãn", "Tam Nhãn Phá Vọng", "Âm Dương Thần Mục", "Hỗn Độn Thần Nhãn"];
 
 let player = null;
 let currentTab = 'status';
-
-function initApp() {
+ function initApp() {
   document.getElementById('app').innerHTML = `
     <div class="card">
       <h3>📜 KHỞI TẠO NHÂN VẬT</h3>
@@ -82,7 +77,7 @@ function initApp() {
       <input type="text" id="pName" value="${getRandomName('female')}">
       <div class="grid">
         <button onclick="document.getElementById('pName').value = getRandomName('male')">🎲 Random Nam</button>
-        <button onclick="document.getElementById('pName').value = getRandomName('female')">🎲 Random Nữ (30% Crush)</button>
+        <button onclick="document.getElementById('pName').value = getRandomName('female')">🎲 Random Nữ</button>
       </div>
       <label style="margin-top:8px; display:block;">Chọn Linh Căn / Phe Phái:</label>
       <select id="pType">
@@ -226,7 +221,6 @@ function renderGame() {
   `;
 }
 
-// --- THAO TÁC XỬ LÝ GAME ---
 function khoTu() {
   const gain = 30 + (player.petIdx + 1) * 5;
   player.exp += gain;
@@ -337,8 +331,7 @@ function buyEye() {
 }
 
 function findPartner() {
-  const isCrush = Math.random() < 0.3;
-  player.partner = isCrush ? "Nguyễn Bảo Ngọc" : namesFemale[Math.floor(Math.random() * namesFemale.length)];
+  player.partner = namesFemale[Math.floor(Math.random() * namesFemale.length)];
   player.partnerAffection = 20;
   addLog(`🌸 Kết duyên gặp gỡ Đạo Lữ: ${player.partner}!`);
   renderGame();
