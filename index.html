@@ -379,3 +379,244 @@
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Tiên Lục 2D - Chatbot RPG</title>
+    <style>
+        :root {
+            --bg-color: #0d0f17;
+            --panel-bg: #161926;
+            --accent-gold: #d4af37;
+            --text-light: #e6e6f0;
+            --text-dim: #9aa0a6;
+            --btn-bg: #222738;
+            --btn-hover: #323952;
+            --red-alert: #e53935;
+            --purple-realm: #8e24aa;
+            --cyan-elem: #00bcd4;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-light); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        .container { width: 100%; max-width: 420px; height: 95vh; max-height: 780px; background-color: var(--panel-bg); border: 1px solid var(--accent-gold); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        header { background-color: rgba(13, 15, 23, 0.9); padding: 12px; text-align: center; border-bottom: 1px solid var(--accent-gold); }
+        header h1 { font-size: 1.1rem; color: var(--accent-gold); margin-bottom: 4px; }
+        .signature-badge { display: inline-block; background: linear-gradient(45deg, #d4af37, #8e24aa); color: #fff; font-size: 0.7rem; font-weight: bold; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px; }
+        .stats-panel { background-color: rgba(0,0,0,0.3); padding: 10px 14px; font-size: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .progress-bar-bg { width: 100%; height: 8px; background-color: #222; border-radius: 4px; overflow: hidden; margin: 4px 0 8px 0; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #00bcd4, #8e24aa); width: 0%; transition: width 0.3s ease; }
+        .chat-box { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { max-width: 85%; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; line-height: 1.4; }
+        .msg-bot { background-color: var(--btn-bg); border-left: 3px solid var(--accent-gold); align-self: flex-start; }
+        .msg-user { background-color: #1e3a5f; border-right: 3px solid var(--cyan-elem); align-self: flex-end; }
+        .controls-grid { padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background-color: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,255,255,0.05); max-height: 230px; overflow-y: auto; }
+        .btn { background-color: var(--btn-bg); color: var(--text-light); border: 1px solid var(--accent-gold); padding: 8px 4px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .btn:hover { background-color: var(--btn-hover); transform: translateY(-1px); }
+        .btn-full { grid-column: span 2; }
+        .btn-admin { border-color: var(--red-alert); color: #ff8a80; }
+        .btn-suicide { border-color: #e53935; background-color: #3b1111; color: #ff5252; }
+        .audio-player { display: none; }
+        footer { text-align: center; font-size: 0.65rem; color: var(--text-dim); padding: 6px; background-color: #0a0c12; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>✨ TU TIÊN LỤC 2D ✨</h1>
+        <div class="signature-badge">Tác giả: dev.hphucz</div>
+    </header>
+    <div class="stats-panel" id="stats-panel">
+        <div class="stat-row"><span id="p-name">Đạo Hữu: Chưa Tạo</span><span id="p-realm" style="color: var(--accent-gold);">Cảnh Giới: --</span></div>
+        <div class="stat-row"><span id="p-sword">Kiếm: --</span><span id="p-hp">HP: 100/100</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="qi-bar"></div></div>
+        <div class="stat-row"><span id="p-atk">ATK: 0</span><span id="p-intent">Kiếm Ý: 0</span><span id="p-stones">Linh Thạch: 0</span></div>
+    </div>
+    <div class="chat-box" id="chat-box">
+        <div class="msg msg-bot">Chào mừng đạo hữu đến với thế giới <b>Tu Tiên Lục 2D</b> do lập trình viên <b>dev.hphucz</b> kiến tạo! Hãy bấm các nút bên dưới để bắt đầu.</div>
+    </div>
+    <div class="controls-grid" id="controls">
+        <button class="btn btn-full" onclick="action('start')">🚀 Khởi Tạo Nhân Vật (Đổi Tên & Kiếm)</button>
+        <button class="btn" onclick="action('train')">🧘 Khổ Tu</button>
+        <button class="btn" onclick="action('sword')">🗡️ Ngộ Kiếm Ý</button>
+        <button class="btn" onclick="action('break')">⚡ Đột Phá / Phi Thăng</button>
+        <button class="btn" onclick="action('explore')">🗺️ Thám Hiểm</button>
+        <button class="btn" onclick="action('fight')">⚔️ Trảm Yêu Thú</button>
+        <button class="btn" onclick="action('cave')">🛖 Động Phủ (Hồi HP)</button>
+        <button class="btn btn-suicide" onclick="action('suicide')">💥 Tự Bạo Oanh Liệt</button>
+        <button class="btn btn-full btn-admin" onclick="action('admin')">👑 Bảng Điều Khiển Admin (dev.hphucz)</button>
+    </div>
+    <footer>Game Engine v2.0 | Created with ❤️ by <b>dev.hphucz</b></footer>
+</div>
+<audio id="bgm" loop class="audio-player"><source src="nhac.mp3" type="audio/mpeg"></audio>
+
+<script>
+    const REALMS = [
+        "Luyện Khí", "Trúc Cơ", "Kết Đan", "Nguyên Anh", "Hóa Thần", 
+        "Luyện Hư", "Hợp Đạo", "Đại Thừa", "Độ Kiếp", "Chân Tiên",
+        "Kim Tiên", "Thái Ất", "Đại La", "Tiên Tôn", "Tiên Đế",
+        "Bán Thánh", "Thánh Nhân", "Cổ Thánh", "Đại Thánh", "Chí Tôn 100"
+    ];
+
+    const SWORDS = [
+        "🔥 Viêm Long Kiếm", "❄️ Băng Phách Kiếm", "⚡ Lôi Lực Thần Kiếm", 
+        "🌑 Hắc Ám Ma Kiếm", "✨ Vô Thượng Tiên Kiếm", "🌿 Trường Sinh Mộc Kiếm"
+    ];
+
+    let player = { 
+        name: "Hàn Lão Ma", 
+        realmIdx: 0, 
+        qi: 0, 
+        maxQi: 100, 
+        hp: 200, 
+        maxHp: 200, 
+        atk: 50, 
+        intent: 10, 
+        stones: 300, 
+        sword: "🔥 Viêm Long Kiếm", 
+        created: false, 
+        inCombat: false, 
+        monsterHp: 0 
+    };
+
+    function log(msg, type="bot") {
+        const box = document.getElementById("chat-box");
+        const div = document.createElement("div");
+        div.className = `msg msg-${type}`;
+        div.innerHTML = msg;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function updateUI() {
+        if (!player.created) return;
+        document.getElementById("p-name").innerText = `Đạo Hữu: ${player.name}`;
+        document.getElementById("p-realm").innerText = `[${REALMS[player.realmIdx] || 'Vĩnh Hằng'}]`;
+        document.getElementById("p-sword").innerText = `Kiếm: ${player.sword}`;
+        document.getElementById("p-hp").innerText = `HP: ${player.hp}/${player.maxHp}`;
+        document.getElementById("p-atk").innerText = `ATK: ${player.atk}`;
+        document.getElementById("p-intent").innerText = `Kiếm Ý: ${player.intent}`;
+        document.getElementById("p-stones").innerText = `Linh Thạch: ${player.stones}`;
+        document.getElementById("qi-bar").style.width = Math.min(100, (player.qi / player.maxQi) * 100) + "%";
+    }
+
+    function action(act) {
+        document.getElementById("bgm").play().catch(() => {});
+        
+        if (act === 'start') {
+            let customName = prompt("Nhập đạo hiệu của ngài (hoặc để trống):", "Hàn Lão Ma");
+            if (customName) player.name = customName;
+            
+            let swordChoice = prompt("Chọn hệ kiếm (Nhập số 1-6):\n1. Viêm Long\n2. Băng Phách\n3. Lôi Lực\n4. Hắc Ám\n5. Vô Thượng\n6. Mộc Kiếm", "1");
+            let idx = parseInt(swordChoice) - 1;
+            if (idx >= 0 && idx < SWORDS.length) {
+                player.sword = SWORDS[idx];
+            }
+
+            player.created = true;
+            log(`<b>[dev.hphucz System]</b> Đạo hữu <b>${player.name}</b> cầm <b>${player.sword}</b> chính thức bước chân vào tiên lộ!`);
+            updateUI();
+            return;
+        }
+
+        if (!player.created) { 
+            log("⚠️ Đạo hữu vui lòng bấm 'Khởi Tạo Nhân Vật' trước để nhập đạo hiệu!"); 
+            return; 
+        }
+
+        if (act === 'train') {
+            let gain = Math.floor(Math.random() * 30) + 20;
+            player.qi += gain;
+            log(`🧘 Khổ tu gia tăng +${gain} tu vi!`);
+            if (player.qi >= player.maxQi) log("💡 Tu vi đã viên mãn! Hãy bấm <b>Đột Phá / Phi Thăng</b>.");
+        } 
+        else if (act === 'sword') {
+            player.intent += 5; 
+            player.atk += 8;
+            log(`🗡️ Ngộ kiếm thành công dưới thác nước, Kiếm Ý +5, Sát thương +8!`);
+        } 
+        else if (act === 'break') {
+            if (player.qi < player.maxQi) { 
+                log("❌ Tu vi chưa đủ viên mãn để đột phá thiên kiếp!"); 
+                return; 
+            }
+            player.qi = 0; 
+            player.maxQi = Math.floor(player.maxQi * 1.5);
+            player.realmIdx = Math.min(REALMS.length - 1, player.realmIdx + 1);
+            player.maxHp += 150; 
+            player.hp = player.maxHp; 
+            player.atk += 40;
+            log(`🌟 <b>LÔI KIẾP GIÁNG THẾ! ĐỘT PHÁ & PHI THĂNG THÀNH CÔNG!</b> Chúc mừng tiến vào đại cảnh giới: <b>${REALMS[player.realmIdx]}</b>!`);
+        } 
+        else if (act === 'explore') {
+            let rand = Math.random();
+            if (rand < 0.4) { 
+                player.stones += 150; 
+                log(`💎 Thám hiểm bí cảnh và nhặt được túi trữ vật (+150 Linh Thạch)!`); 
+            }
+            else if (rand < 0.8) { 
+                player.inCombat = true; 
+                player.monsterHp = (player.realmIdx + 1) * 180; 
+                log(`⚔️ <b>CẢNH BÁO:</b> Chạm trán Yêu Thú hoang dã (HP: ${player.monsterHp})! Hãy bấm 'Trảm Yêu Thú'.`); 
+            }
+            else { 
+                log("💨 Đi dạo quanh sơn cốc tìm dược liệu, tâm cảnh thanh tịnh."); 
+            }
+        } 
+        else if (act === 'fight') {
+            if (!player.inCombat) { 
+                log("ℹ️ Xung quanh bình yên vô sự, không có yêu thú để chém."); 
+                return; 
+            }
+            let dmg = player.atk + player.intent * 2;
+            player.monsterHp -= dmg;
+            log(`🗡️ Kiếm khí tung hoành chém yêu thú gây <b>${dmg}</b> sát thương!`);
+            
+            if (player.monsterHp <= 0) { 
+                player.inCombat = false; 
+                player.stones += 300; 
+                log("🎉 <b>Trảm sát yêu thú thành công!</b> Thu hoạch chiến lợi phẩm +300 Linh Thạch."); 
+            } else {
+                let mobAtk = (player.realmIdx + 1) * 18;
+                player.hp = Math.max(0, player.hp - mobAtk);
+                log(`💥 Yêu thú gầm thét phản công gây ${mobAtk} sát thương! (HP còn: ${player.hp})`);
+                if (player.hp === 0) {
+                    log("💀 Đạo hữu đã bị yêu thú đánh trọng thương ngất xỉu! Hãy về Động Phủ hồi HP.");
+                }
+            }
+        } 
+        else if (act === 'cave') {
+            player.hp = player.maxHp; 
+            log("🛖 Trở về Động Phủ bế quan tĩnh dưỡng, khôi phục toàn bộ HP đỉnh phong!");
+        } 
+        else if (act === 'suicide') {
+            let confirmSuicide = confirm("⚠️ Đạo hữu có chắc chắn muốn TỰ BẠO oanh liệt (Thiêu đốt tất cả tu vi và HP để gây sát thương tuyệt diệt) không?");
+            if (confirmSuicide) {
+                player.hp = 0;
+                player.qi = 0;
+                log("💥 <b>ĐẠO HỮU CHỌN CON ĐƯỜNG TỰ BẠO!</b> Chấn động thiên địa, linh lực vỡ nát tiêu tan giữa hư vô... Toàn bộ tu vi quy về con số 0. Hãy về Động Phủ hồi sinh lại từ đầu!");
+            }
+        }
+        else if (act === 'admin') {
+            let cmd = prompt("👑 [Bảng Điều Khiển Admin dev.hphucz]\nNhập lệnh:\n1. Max Cấp 100 Chí Tôn\n2. Tăng 99999 Linh Thạch\n3. Hồi đầy HP", "1");
+            if (cmd === "1") {
+                player.realmIdx = REALMS.length - 1; 
+                player.atk += 3000; 
+                player.maxHp += 10000; 
+                player.hp = player.maxHp;
+                log("👑 <b>[Lệnh Admin dev.hphucz]</b> Đã kích hoạt hack max cấp Chí Tôn 100!");
+            } else if (cmd === "2") {
+                player.stones += 99999;
+                log("👑 <b>[Lệnh Admin dev.hphucz]</b> Đã nạp +99999 Linh Thạch vào túi trữ vật!");
+            } else if (cmd === "3") {
+                player.hp = player.maxHp;
+                log("👑 <b>[Lệnh Admin dev.hphucz]</b> Đã bơm đầy bình máu!");
+            }
+        }
+        updateUI();
+    }
+</script>
+</body>
+</html>
